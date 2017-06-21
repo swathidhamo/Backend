@@ -28,7 +28,7 @@
         }
   
 
-      $sql = "INSERT INTO content (title, info) VALUEs ('$title', '$content')";
+      $sql = "INSERT INTO content (title, info) VALUES ('$title', '$content')";
       $query = mysqli_query($link,$sql);
 
     }
@@ -55,11 +55,39 @@
         echo "<tr><td>".$query2['id']."</td>";
         echo "<td>".$query2['title']."</td>";
         echo "<td>".$query2['info']."</td>";
-        echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit/Delete</a></td><tr>";
-       // echo "<td><a href = 'edite.php?id=".$query2['id']."'>X</a></td>";
-
-      
+        echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit/Delete</a></td><tr>";      
         }
+
+    if(isset($_GET["elevate"])){
+       
+         if(isset($_GET['ascess'])){
+           $ascess = $_GET['ascess'];
+
+           $ascess_query  = "UPDATE user_info SET ascess_level = '1' WHERE username = '$ascess' ";
+           $result_q = mysqli_query($link, $ascess_query);
+
+           if($result_q){
+            echo "ascess changed";
+           }
+         }
+
+       }   
+
+
+    if(isset($_GET["demote"])){
+       
+         if(isset($_GET['ascess'])){
+           $ascess = $_GET['ascess'];
+
+           $ascess_query  = "UPDATE user_info SET ascess_level = '0' WHERE username = '$ascess' ";
+           $result_q = mysqli_query($link, $ascess_query);
+
+           if($result_q){
+            echo "ascess changed";
+           }
+         }
+
+       }   
   ?>
 
 </table>
@@ -74,10 +102,9 @@
    	  <textarea name = "content0" id = "content0" width = "200" height = "200"></textarea>
    	  <input type = "text" name = "title">
       <input type = "submit" name = "new" value = "new">
-
-
-
-
+      <input type = "submit" name = "elevate" value = "elevate">
+      <input type = "submit" name = "demote" value = "Demote">
+      <input type = "text" name = "ascess" placeholder = "enter the username">
    </form>
 
  

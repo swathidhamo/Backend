@@ -28,14 +28,20 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
  
 
 //$sql = "INSERT INTO user_info (id, username, password) VALUES('4','adminstrator','pilas')";//WHERE username = '" .$username. "' AND password = '" .$password. "' "
-$sql = "SELECT * FROM `user_info` WHERE username = '$username' AND password = '$password' ";
-$res = mysqli_query($link,$sql);
+ $sql = "SELECT * FROM `user_info` WHERE username = '$username' AND password = '$password' ";
+ $res = mysqli_query($link,$sql);
+ $rows = mysqli_num_rows($res);
 
-$rows = mysqli_num_rows($res);
+ $sql1 = "SELECT username, password, ascess_level FROM `user_info` WHERE username = '$username' AND password = '$password' ";
+ $res1 = mysqli_query($link, $sql1); 
+ $ascess = mysqli_fetch_array($res);
+ $level = $ascess['ascess_level'];
+
+
 //cho mysql_error();
 //$rows = mysqli_statement_num_rows($res);
 
-if($rows ==1 && $username == "admin"){
+if($rows ==1 && $level==1){
 	echo "yes it works";
 	header('Location: forum.php');
 	
@@ -65,6 +71,7 @@ else {
     <p>Password: <input type = "text" name = "password"></p>
      
      <input type = "submit" name = "Submit" value = "Log in">
+     <a href = "register.php">Click here to register</a>
      
   	</form>
   
