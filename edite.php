@@ -38,6 +38,30 @@
    }
 
 
+     if(isset($_GET['id'])){
+
+     $id = $_GET['id'];
+     echo $id;
+
+     if(isset($_POST["delete"])){
+
+     $query_delete = "DELETE FROM content WHERE id = '$id' ";
+    
+     $result_delete = mysqli_query($link, $query_delete);
+    
+
+     if($result_delete){
+      echo "Edited";
+      header("Location: forum.php");
+     }
+
+     }
+   //  header("Location: forum.php");
+
+
+   }
+
+
 
 
 
@@ -50,8 +74,9 @@
 
    	  <input type = "text" name = "title">
    	  <input type= "submit" name = "edit" id = "edit" value = "Edit">
-      
+      <input type= "submit" name = "delete" id = "delete" value = "Delete">
 
+    
 
 
 

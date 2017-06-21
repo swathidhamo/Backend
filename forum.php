@@ -55,8 +55,8 @@
         echo "<tr><td>".$query2['id']."</td>";
         echo "<td>".$query2['title']."</td>";
         echo "<td>".$query2['info']."</td>";
-        echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit</a></td>";
-        echo "<td><a href = 'deletee.php?id=".$query2['id']."'>X</a></td><tr>";
+        echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit/Delete</a></td><tr>";
+       // echo "<td><a href = 'edite.php?id=".$query2['id']."'>X</a></td>";
 
       
         }
@@ -72,10 +72,7 @@
    
    <form method = "GET" >
    	  <textarea name = "content0" id = "content0" width = "200" height = "200"></textarea>
-
    	  <input type = "text" name = "title">
-   	  <input type= "submit" name = "edit" id = "edit" value = "Edit">
-  
       <input type = "submit" name = "new" value = "new">
 
 
