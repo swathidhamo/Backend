@@ -13,39 +13,45 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 
 
 
-	echo "wok";
-if(isset($_POST["Submit"])){
-if(isset($_POST['username'])){
-	echo "it goes";
-	echo $_POST['username'];
+
+ if(isset($_POST["Submit"])){
+   if(isset($_POST['username'])){
+	 
 	$username = $_POST['username'];
-}
-if(isset($_POST['password'])){
-	echo "adn hter";
+   }
+   if(isset($_POST['password'])){
 	$password = $_POST['password'];
 }
 //$username = $_POST["username"];
 //$password = $_POST["password"];
 }
-$table = "user_info";
+ 
 
-//$sql  = "INSERT INTO user_info (id, username, password) VALUES('3','woek','pil')";WHERE username = '" .$username. "' AND password = '" .$password. "' "
-$sql = "SELECT * FROM user_info ";
+//$sql = "INSERT INTO user_info (id, username, password) VALUES('4','adminstrator','pilas')";//WHERE username = '" .$username. "' AND password = '" .$password. "' "
+$sql = "SELECT * FROM `user_info` WHERE username = '$username' AND password = '$password' ";
 $res = mysqli_query($link,$sql);
-$rows = mysql_num_rows($res);
 
-if($rows > 0){
-	echo "yes";
+$rows = mysqli_num_rows($res);
+//cho mysql_error();
+//$rows = mysqli_statement_num_rows($res);
+
+if($rows ==1 && $username == "admin"){
+	echo "yes it works";
+	header('Location: forum.php');
 	
+}
+else if($rows==1){
+	header('Location: viewing.php');
 }
 else {
 	echo "no";
+	//echo mysql_errno($link) . ": " . mysql_error($link) . "\n";
 	//echo mysql_num_rows($res);
 
 }
 
 
-mysqli_close($link);
+ mysqli_close($link);
 ?>
 <html>
 <head>
