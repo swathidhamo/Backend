@@ -16,15 +16,19 @@
 	<?php
 
 	  $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
-
-
-      if(isset($_GET["new"])){
+     //session_start();
+     //session_destroy();
+     session_start();
+     echo $_SESSION["username"];
+   
+      if( !empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["ascess_level"]==1 ){
+      if(isset($_POST["new"])){
        
-        if(isset($_GET["content0"])){
-      	    $content = $_GET["content0"];
+        if(isset($_POST["content0"])){
+      	    $content = $_POST["content0"];
         }
-        if(isset($_GET["title"])){
-        	$title = $_GET["title"];
+        if(isset($_POST["title"])){
+        	$title = $_POST["title"];
         }
   
 
@@ -58,10 +62,10 @@
         echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit/Delete</a></td><tr>";      
         }
 
-    if(isset($_GET["elevate"])){
+    if(isset($_POST["elevate"])){
        
-         if(isset($_GET['ascess'])){
-           $ascess = $_GET['ascess'];
+         if(isset($_POST['ascess'])){
+           $ascess = $_POST['ascess'];
 
            $ascess_query  = "UPDATE user_info SET ascess_level = '1' WHERE username = '$ascess' ";
            $result_q = mysqli_query($link, $ascess_query);
@@ -74,10 +78,10 @@
        }   
 
 
-    if(isset($_GET["demote"])){
+    if(isset($_POST["demote"])){
        
-         if(isset($_GET['ascess'])){
-           $ascess = $_GET['ascess'];
+         if(isset($_POST['ascess'])){
+           $ascess = $_POST['ascess'];
 
            $ascess_query  = "UPDATE user_info SET ascess_level = '0' WHERE username = '$ascess' ";
            $result_q = mysqli_query($link, $ascess_query);
@@ -88,6 +92,16 @@
          }
 
        }   
+
+
+     }
+
+
+     else if(empty($_SESSION["ascess_level"]&& empty($_SESSION["username"]))){
+
+      header("Location: connect.php");
+      echo "You do not have the ascess level";
+     }
   ?>
 
 </table>
@@ -98,7 +112,7 @@
 </head>
 <body>
    
-   <form method = "GET" >
+   <form method = "POST" >
    	  <textarea name = "content0" id = "content0" width = "200" height = "200"></textarea>
    	  <input type = "text" name = "title">
       <input type = "submit" name = "new" value = "new">

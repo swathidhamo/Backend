@@ -10,7 +10,9 @@ if (!$link) {
 }
 
 echo "Success: A proper connection to MySQL was made! The first_db database is great." . PHP_EOL;
-
+   
+ session_start();
+ session_destroy();
 
 
 
@@ -22,6 +24,10 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
    if(isset($_POST['password'])){
 	$password = $_POST['password'];
 }
+
+
+
+ session_start();
 //$username = $_POST["username"];
 //$password = $_POST["password"];
 }
@@ -42,11 +48,15 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 //$rows = mysqli_statement_num_rows($res);
 
 if($rows ==1 && $level==1){
+  $_SESSION["username"] = $username; 
+  $_SESSION["ascess_level"] = $level;
 	echo "yes it works";
 	header('Location: forum.php');
 	
 }
 else if($rows==1){
+  $_SESSION["username"] = $username; 
+  $_SESSION["ascess_level"] = $level;
 	header('Location: viewing.php');
 }
 else {

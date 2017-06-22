@@ -4,11 +4,16 @@
 	<?php
 
 	  $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
-    echo "hi";
-	  if(isset($_GET['id'])){
+    session_start();
+
+    echo $_SESSION["username"];
+    //echo "hi";
+    if(!empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["ascess_level"]==1){
+    
+    if(isset($_GET['id'])){
 
      $id = $_GET['id'];
-     echo $id;
+     //echo $id;
 
      if(isset($_POST["edit"])){
 
@@ -41,7 +46,7 @@
      if(isset($_GET['id'])){
 
      $id = $_GET['id'];
-     echo $id;
+     //echo $id;
 
      if(isset($_POST["delete"])){
 
@@ -59,6 +64,18 @@
    //  header("Location: forum.php");
 
 
+   }
+
+ }
+
+ else if($_SESSION["ascess_level"]==0 && !empty($_SESSION["username"])) {
+   header("Location: viewing.php");
+   echo "Ascess denied";
+
+
+   }
+   else{
+    header("Location: connect.php");
    }
 
 
