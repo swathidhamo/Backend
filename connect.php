@@ -38,36 +38,57 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
  $res = mysqli_query($link,$sql);
  $rows = mysqli_num_rows($res);
 
- $sql1 = "SELECT username, password, ascess_level FROM `user_info` WHERE username = '$username' AND password = '$password' ";
+ $sql1 = "SELECT username,password, ascess_level FROM `user_info` WHERE username = '$username'";
  $res1 = mysqli_query($link, $sql1); 
  $ascess = mysqli_fetch_array($res);
  $level = $ascess['ascess_level'];
+ $hash = $ascess['password'];
+
+
+
 
 
 //cho mysql_error();
 //$rows = mysqli_statement_num_rows($res);
 
-if($rows ==1 && $level==1){
+ if($rows ==1 && $level==1 && $hash==$password_hash){
   $_SESSION["username"] = $username; 
   $_SESSION["ascess_level"] = $level;
-	echo "yes it works";
 	header('Location: forum.php');
+  echo mysqli_error($link);
 	
 }
-else if($rows==1){
-  $_SESSION["username"] = $username; 
-  $_SESSION["ascess_level"] = $level;
-	header('Location: viewing.php');
-}
-else {
-	echo "no";
+  
+ else if($rows==0 && $password_hash==$hash) {
+    $_SESSION["username"] = $username; 
+    $_SESSION["ascess_level"] = $level;
+  
+	  header('Location: viewing.php');
+   }
+ else {
+  	echo "no";
+    echo $hash;
+    echo mysqli_error($link);
+
+   // echo $passwordhash;
 	//echo mysql_errno($link) . ": " . mysql_error($link) . "\n";
 	//echo mysql_num_rows($res);
+   }
 
-}
+
+    
+     // calculate the hash from a salt and a password
+    function getPasswordHash($password)
+   {
+    return ( hash( 'whirlpool', $password ) );
+   }
+
+     // compare a password to a hash
+   
 
 
- mysqli_close($link);
+
+   mysqli_close($link);
 ?>
 <html>
 <head>

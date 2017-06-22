@@ -16,10 +16,10 @@
     		$password = $_POST["password"];
     		//echo $password;
     	}
+         
+          $hash = getPasswordHash($password); 
 
-          
-
-        $sql = "INSERT INTO user_info (username, password,ascess_level) VALUES ('$username', '$password','0')";
+        $sql = "INSERT INTO user_info (username, password, ascess_level) VALUES ('$username', '$hash','0')";
         $query = mysqli_query($link,$sql);
     }
     	if($query){
@@ -32,8 +32,14 @@
 
 
 
-    
+// calculate the hash from a salt and a password
+    function getPasswordHash( $password )
+ {
+    return ( hash( 'whirlpool', $password ) );
+  }
 
+
+// get a new hash for a password
 
 
 
