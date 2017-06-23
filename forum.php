@@ -10,16 +10,18 @@
     margin-top: 5px;
    }
 
+    .link{
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 2.5px solid red;
+   }
+
 
   </style>
 	<title>The forum</title>
 	<?php
 
 	  $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
-
-
-     //session_start();
-     //session_destroy();
      session_start();
      echo "Welcome to the forum " .$_SESSION["username"] . "  " .$_SESSION["moderated"]. " " ;
    
@@ -32,8 +34,13 @@
         if(isset($_POST["title"])){
         	$title = $_POST["title"];
         }
+        /* Here the database 'content' consists of the all the information that will be 
+        displayed in the forum.
+        But the database 'approval' will consists of the information that will have to 
+        be approved by a non-moderated admin level member
+        */
                  
-       if($_SESSION["moderated"]==1){
+       if($_SESSION["moderated"]==1){//if the user is not moderated the content will be directly added to the forum
 
       $sql = "INSERT INTO content (title, info) VALUES ('$title', '$content')";
       $query = mysqli_query($link,$sql);
@@ -41,7 +48,7 @@
         }
       
     
-    if($_SESSION["moderated"]==0){
+    if($_SESSION["moderated"]==0){//if the user is moderated then the content is added into a database that will have to be approved by the admin
       if(isset($_POST["content0"]) && isset($_POST["title"])){
       $sql_approval = "INSERT INTO approval (title, info) VALUES ('$title', '$content')";
       $query_approval = mysqli_query($link,$sql_approval);
@@ -52,23 +59,8 @@
    }
   }
 
-     
 
-   /*   $display = "SELECT id,title, info FROM content";
-      $result = mysqli_query($link,$display);
-
-      echo "<table><tr><td>Title</td><td>Info</td><td></td><td></td>";
-
-      while($row = mysqli_fetch_assoc($result)) {
-
-        echo "<tr><td>".$row['title']."</td>";
-        echo "<td>".$row['info']."</td><tr>";
-        echo "<td><a href='edit.php?id=".$row['id']."'>Edit</a></td>";
-        echo "<td><a href='delete.php?id=".$row['id']."'>x</a></td><tr>";        
-    }
-*/
-
-
+    //this is to display the contents of the forum for all the members 
    $result=mysqli_query($link,"SELECT id, title, info FROM content");
    echo "<table><tr><td>No.</td><td>Title</td><td>Info</td><td></td><td></td>";
    while($query2=mysqli_fetch_array($result))
@@ -78,7 +70,7 @@
         echo "<td>".$query2['info']."</td>";
         echo "<td><a href= 'edite.php?id=".$query2['id']."'>Edit/Delete</a></td><tr>";      
         }
-
+    //to elevate the ascess level of a user
     if(isset($_POST["elevate"])){
        
          if(isset($_POST['ascess'])){
@@ -96,7 +88,7 @@
 
   
 
-
+    //to demote a given user from a higher to a lower ascess level
     if(isset($_POST["demote"])){
        
          if(isset($_POST['ascess'])){
@@ -118,7 +110,7 @@
       header("Location: connect.php");
      }
 
-
+     //to direct a non moderated admin ascess level member to the approval database
      if($_SESSION["moderated"] == 1){
        if(isset($_POST["approval"])){
          header("Location: approve.php");
@@ -126,16 +118,10 @@
    }
 
        
-   /*if(empty($_SESSION["ascess_level"]&& empty($_SESSION["username"]))){
-     echo "You do not have the ascess level";
-   //  header("Location: connect.php");
-      echo "You do not have the ascess level";
-     }*/
   ?>
 
 </table>
-</body>
-</html>    
+
 
 
 </head>
@@ -151,7 +137,7 @@
       <input type = "submit" name = "approval" value = "Approval Pending" >
 
    </form>
-   <a href = "logout.php">Logout</a>
+   <a href = "logout.php" class = "link">Logout</a>
 
  
 

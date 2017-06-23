@@ -106,9 +106,33 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 <html>
 <head>
 	<title>Note making forum</title>
+  <style type="text/css">
+   .login{
+     border: 2px solid black;
+     border-radius: 1px 1px 1px 1px;
+     padding: 15px 15px 15px 15px;
+     margin right: 400px;
+     margin-top: 210px;
+     margin-left: 210px;
+     width: 450px;
+     font-size: 20px;
+   }
+
+   body {
+    font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+    color: #404040;
+    background: #0ca3d2;
+
+   }
+   
+
+
+
+  </style>
 
 </head>
   <body>
+    <div class = "login">
   	<form method= "POST">
 
     <p>Username: <input type = "text" name = "username"></p> 
@@ -118,6 +142,6 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
      <a href = "captcha.php">Click here to register</a>
      
   	</form>
-  
+    </div>
   </body
 </html>

@@ -84,6 +84,15 @@
 
 
 	?>
+
+  <style type="text/css">
+    .link{
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 2.5px solid red;
+   }
+
+  </style>
 </head>
 <body>
  <form method = "POST" >
@@ -98,7 +107,7 @@
 
 
    </form>
-   <a href = "logout.php">Logout</a>
+   <a href = "logout.php" class = "link">Logout</a>
 
 </body>
 </html>

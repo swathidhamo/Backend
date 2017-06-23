@@ -54,13 +54,20 @@
        }
 
 	?>
+  <style type="text/css">
+    .link{
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 2.5px solid red;
+   }
+  </style>
 </head>
 <body>
   <form method = "POST">
   <input type = "text" name = "id">
   <input type = "submit" name = "approve" value = "Approve">
   <input type = "submit" name = "reject" value = "Reject">
-  <a href = "logout.php">Logout</a>
+  <a href = "logout.php" class = "link">Logout</a>
   </form>
 </body>
 </html>
