@@ -28,21 +28,22 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 
 
  session_start();
-//$username = $_POST["username"];
-//$password = $_POST["password"];
-}
- 
+
+  $password_hash = hash( 'whirlpool', $password );
 
 //$sql = "INSERT INTO user_info (id, username, password) VALUES('4','adminstrator','pilas')";//WHERE username = '" .$username. "' AND password = '" .$password. "' "
- $sql = "SELECT * FROM `user_info` WHERE username = '$username' AND password = '$password' ";
- $res = mysqli_query($link,$sql);
- $rows = mysqli_num_rows($res);
+   $sql = "SELECT * FROM `user_info` WHERE username = '$username' ";
+   $res = mysqli_query($link,$sql);
+   $rows = mysqli_num_rows($res);
 
- $sql1 = "SELECT username,password, ascess_level FROM `user_info` WHERE username = '$username'";
- $res1 = mysqli_query($link, $sql1); 
- $ascess = mysqli_fetch_array($res);
- $level = $ascess['ascess_level'];
- $hash = $ascess['password'];
+   $sql1 = "SELECT username, password, ascess_level, moderate_status FROM `user_info` WHERE username = '$username'";
+   $res1 = mysqli_query($link, $sql1); 
+   $ascess = mysqli_fetch_array($res1);
+   $level = $ascess['ascess_level'];
+   $hash = $ascess['password'];
+   $moderated = $ascess['moderate_status'];
+  // $_SESSION["moderated"] = $moderated;
+   
 
 
 
@@ -51,30 +52,36 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 //cho mysql_error();
 //$rows = mysqli_statement_num_rows($res);
 
- if($rows ==1 && $level==1 && $hash==$password_hash){
-  $_SESSION["username"] = $username; 
-  $_SESSION["ascess_level"] = $level;
-	header('Location: forum.php');
-  echo mysqli_error($link);
+ if($rows == 1 && $level==1 &&$password_hash==$hash){
+   echo "ji";
+    $_SESSION["username"] = $username; 
+    $_SESSION["ascess_level"] = $level;
+    $_SESSION["moderated"] = $moderated;
+	  header('Location: forum.php');
+   
+    echo mysqli_error($link);
 	
 }
   
- else if($rows==0 && $password_hash==$hash) {
+ else if($rows==1 && $level==0 && $password_hash==$hash) {
     $_SESSION["username"] = $username; 
     $_SESSION["ascess_level"] = $level;
-  
+    echo "what";
+    //echo $level;
 	  header('Location: viewing.php');
    }
  else {
   	echo "no";
+    echo $rows;
     echo $hash;
     echo mysqli_error($link);
 
-   // echo $passwordhash;
+   // echo $passwordha
 	//echo mysql_errno($link) . ": " . mysql_error($link) . "\n";
 	//echo mysql_num_rows($res);
    }
 
+  }
 
     
      // calculate the hash from a salt and a password

@@ -16,12 +16,14 @@
 	<?php
 
 	  $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
+
+
      //session_start();
      //session_destroy();
      session_start();
-     echo $_SESSION["username"];
+     echo "Welcome to the forum " .$_SESSION["username"] . "  " .$_SESSION["moderated"]. " " ;
    
-      if( !empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["ascess_level"]==1 ){
+      if( !empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["ascess_level"]==1){
       if(isset($_POST["new"])){
        
         if(isset($_POST["content0"])){
@@ -30,12 +32,27 @@
         if(isset($_POST["title"])){
         	$title = $_POST["title"];
         }
-  
+                 
+       if($_SESSION["moderated"]==1){
 
       $sql = "INSERT INTO content (title, info) VALUES ('$title', '$content')";
       $query = mysqli_query($link,$sql);
 
-    }
+        }
+      
+    
+    if($_SESSION["moderated"]==0){
+      if(isset($_POST["content0"]) && isset($_POST["title"])){
+      $sql_approval = "INSERT INTO approval (title, info) VALUES ('$title', '$content')";
+      $query_approval = mysqli_query($link,$sql_approval);
+      if($query_approval){
+        echo "Please wait while you post is pending for approval";
+      }
+     }
+   }
+  }
+
+     
 
    /*   $display = "SELECT id,title, info FROM content";
       $result = mysqli_query($link,$display);
@@ -77,6 +94,8 @@
 
        }   
 
+  
+
 
     if(isset($_POST["demote"])){
        
@@ -92,16 +111,26 @@
          }
 
        }   
+}
+     
 
-
-     }
-
-
-     else if(empty($_SESSION["ascess_level"]&& empty($_SESSION["username"]))){
-
+     else {
       header("Location: connect.php");
-      echo "You do not have the ascess level";
      }
+
+
+     if($_SESSION["moderated"] == 1){
+       if(isset($_POST["approval"])){
+         header("Location: approve.php");
+     }
+   }
+
+       
+   /*if(empty($_SESSION["ascess_level"]&& empty($_SESSION["username"]))){
+     echo "You do not have the ascess level";
+   //  header("Location: connect.php");
+      echo "You do not have the ascess level";
+     }*/
   ?>
 
 </table>
@@ -119,7 +148,10 @@
       <input type = "submit" name = "elevate" value = "elevate">
       <input type = "submit" name = "demote" value = "Demote">
       <input type = "text" name = "ascess" placeholder = "enter the username">
+      <input type = "submit" name = "approval" value = "Approval Pending" >
+
    </form>
+   <a href = "logout.php">Logout</a>
 
  
 

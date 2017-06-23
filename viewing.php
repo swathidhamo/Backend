@@ -9,6 +9,7 @@
     margin-top: 5px;
     padding-bottom:  5px;
     margin-bottom: 5px;
+    padding-right: 100px;
    }
 
 
@@ -17,14 +18,15 @@
   <?php
    $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
    session_start();
+   echo "Welcome to the forum " .$_SESSION["username"];
 
      if( empty($_SESSION["username"]) ) {
 
       header("Location: connect.php");
       echo "You do not have the ascess level";
      }
-
-
+ 
+     else {
       $display = "SELECT id,title, info FROM content";
       $result = mysqli_query($link,$display);
 
@@ -34,7 +36,7 @@
     }
 
   
-
+   }
      
 
   ?>
@@ -42,10 +44,12 @@
 <body>
    <div id= "workspace">
    <form method = "GET" >
-  
+   
 
    </form>
 </div>
+   <a href = "logout.php">Logout</a>
+   
    <script type="text/javascript">
     
 
