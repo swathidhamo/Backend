@@ -20,9 +20,15 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
    if(isset($_POST['username'])){
 	 
 	$username = $_POST['username'];
+ // $username = stripslashes($username);
+  //$username = mysqli_real_escape_string($username);
+
+
    }
    if(isset($_POST['password'])){
 	$password = $_POST['password'];
+  //$password = stripslashes($password);
+  //$password = mysqli_real_escape_string($password);
 }
 
 
@@ -109,7 +115,7 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
     <p>Password: <input type = "text" name = "password"></p>
      
      <input type = "submit" name = "Submit" value = "Log in">
-     <a href = "register.php">Click here to register</a>
+     <a href = "captcha.php">Click here to register</a>
      
   	</form>
   
