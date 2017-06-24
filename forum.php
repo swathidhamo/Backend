@@ -8,6 +8,7 @@
     padding-bottom:  5px;
     margin-bottom: 5px;
     margin-top: 5px;
+    background: #dce1ea;
    }
 
     .link{
@@ -20,6 +21,13 @@
       width: 100px;
       height: 100px;
     }
+    body{
+     background: #0ca3d2;
+   }
+
+   .ascess{
+    border: 2px solid black;
+   }
 
   </style>
 	<title>The forum</title>
@@ -58,9 +66,9 @@
                  
        if($_SESSION["moderated"]==1){//if the user is not moderated the content will be directly added to the forum
     
-      $sql = "INSERT INTO content (title, info, image) VALUES ('$title', '$content',?)";
+      $sql = "INSERT INTO content (title, info, image) VALUES (?,?,?)";
       $query = mysqli_prepare($link,$sql);
-      mysqli_stmt_bind_param($query, "s",$img);
+      mysqli_stmt_bind_param($query, "sss",$title,$content,$img);
       mysqli_stmt_execute($query);
 
      }
@@ -68,9 +76,9 @@
     
     if($_SESSION["moderated"]==0){//if the user is moderated then the content is added into a database that will have to be approved by the admin
       if(isset($_POST["content0"]) && isset($_POST["title"])){
-      $sql_approval = "INSERT INTO approval (title, info, image) VALUES ('$title', '$content', ?)";
+      $sql_approval = "INSERT INTO approval (title, info, image) VALUES (?, ?, ?)";
       $query_approval = mysqli_prepare($link,$sql_approval);
-      mysqli_stmt_bind_param($query_approval,"s",$img);
+      mysqli_stmt_bind_param($query_approval,"sss",$title, $content,$img);
       mysqli_stmt_execute($query_approval);
       if($query_approval){
         echo "Please wait while you post is pending for approval";
@@ -96,13 +104,26 @@
     //to elevate the ascess level of a user
     if(isset($_POST["elevate"])){
        
-         if(isset($_POST['ascess'])){
+         if(isset($_POST['ascess']) && isset($_POST["level"])){
            $ascess = $_POST['ascess'];
+           $user_level = $_POST["level"];
+            if($user_level==1){
+             $value = 1;//for a professor
+            }
+            else if($user_level==2){
+              $value = 2;
+            }
+            else if($user_level==0){
+              $value = 0;
+            }
 
-           $ascess_query  = "UPDATE user_info SET ascess_level = '1' WHERE username = '$ascess' ";
-           $result_q = mysqli_query($link, $ascess_query);
+           $ascess_query  = "UPDATE user_info SET ascess_level = ? WHERE username = '".$ascess."' ";
+           $result_q = mysqli_prepare($link,$ascess_query);
+           mysqli_stmt_bind_param($result_q,"i",$value);
+           $ascess_change = mysqli_stmt_execute($result_q);
+          // $result_q = mysqli_query($link, $ascess_query);
 
-           if($result_q){
+           if($ascess_change){
             echo "ascess changed";
            }
          }
@@ -111,21 +132,6 @@
 
   
 
-    //to demote a given user from a higher to a lower ascess level
-    if(isset($_POST["demote"])){
-       
-         if(isset($_POST['ascess'])){
-           $ascess = $_POST['ascess'];
-
-           $ascess_query  = "UPDATE user_info SET ascess_level = '0' WHERE username = '$ascess' ";
-           $result_q = mysqli_query($link, $ascess_query);
-
-           if($result_q){
-            echo "ascess changed";
-           }
-         }
-
-       }   
 }
 
      
@@ -158,10 +164,15 @@
    	  <input type = "text" name = "title">
       <input type = "submit" name = "new" value = "new">
       <input type="file" name="image" />
-      <input type = "submit" name = "elevate" value = "elevate">
-      <input type = "submit" name = "demote" value = "Demote">
-      <input type = "text" name = "ascess" placeholder = "enter the username">
-      <input type = "submit" name = "approval" value = "Approval Pending" >
+      <input type = "submit" name = "elevate" value = "change"> 
+     <div class = "ascess"> 
+      <select name = "level">
+       <option value = "2">CR</option> 
+        <option value = "1">Professor</option> 
+        <option value = "0">Student</option> 
+     </select>
+       <input type = "text" name = "ascess" placeholder = "enter the username">
+    </div>
       <a href="approve.php">Approvals pending</a>
 
    </form>

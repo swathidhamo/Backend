@@ -12,7 +12,7 @@
     
     if(isset($_GET['id'])){
 
-     $id = $_GET['id'];
+     $id = int($_GET['id']);
      
 
      if(isset($_POST["edit"])){
@@ -31,7 +31,7 @@
      
 
      
-     $query_edit = "UPDATE content SET title = '$edited_title', info = '$edited_info', image  = ? WHERE id = '$id' ";
+     $query_edit = "UPDATE content SET title = '".$edited_title. "', info = '".$edited_info."', image  = ? WHERE id = '" .$id. "' ";
       $edit = mysqli_prepare($link,$query_edit);
       mysqli_stmt_bind_param($edit, "s",$img);
       $result = mysqli_stmt_execute($edit);
@@ -57,7 +57,7 @@
 
      if(isset($_POST["delete"])){
 
-     $query_delete = "DELETE FROM content WHERE id = '$id' ";
+     $query_delete = "DELETE FROM content WHERE id = '" .$id. "' ";
     
      $result_delete = mysqli_query($link, $query_delete);
     

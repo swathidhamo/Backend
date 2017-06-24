@@ -21,9 +21,10 @@
         }
 
         if(isset($_POST["id"]) ){
-          $id = $_POST["id"];
+          $id = int($_POST["id"]);
+          
 
-          $query_approve = "SELECT title, info, image FROM approval WHERE id = '$id' ";
+          $query_approve = "SELECT title, info, image FROM approval WHERE id = '" .$id. "'";
           $result_approve = mysqli_query($link,$query_approve);
           $array_approve = mysqli_fetch_array($result_approve);
           $title = $array_approve["title"];
@@ -32,20 +33,20 @@
          // $img = base64_decode($image_content);
          
           if(isset($_POST["approve"])){
-            $query_append = "INSERT INTO content (title, info, image) VALUES ('$title', '$info', ? )";
+            $query_append = "INSERT INTO content (title, info, image) VALUES ( ? , ? , ? )";
             $append_result = mysqli_prepare($link,$query_append);
-            mysqli_stmt_bind_param($append_result,"s",$image_content);
+            mysqli_stmt_bind_param($append_result,"sss",$title,$info,$image_content);
             mysqli_stmt_execute($append_result);
 
            
             if($append_result){
               echo "Sucessfully approved";
-              $query_reject = "DELETE FROM approval WHERE id = '$id' ";
+              $query_reject = "DELETE FROM approval WHERE id = '" .$id. "' ";
               $reject_result = mysqli_query($link,$query_reject);
             }
           }
           else if(isset($_POST['reject'])){
-            $query_reject = "DELETE FROM approval WHERE id = '$id' ";
+            $query_reject = "DELETE FROM approval WHERE id = '".$id."' ";
             $reject_result = mysqli_query($link,$query_reject);
             if($reject_result){
               echo "Sucessfully rejected";
@@ -74,6 +75,9 @@
    img{
     width: 50px;
     height: 50px;
+   }
+   body{
+     background: #0ca3d2;
    }
   </style>
 </head>

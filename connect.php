@@ -19,15 +19,15 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
  if(isset($_POST["Submit"])){
    if(isset($_POST['username'])){
 	 
-	$username = $_POST['username'];
- // $username = stripslashes($username);
+	$username = mysqli_real_escape_string($link,$_POST['username']);
+  $username = stripslashes($username);
   //$username = mysqli_real_escape_string($username);
 
 
    }
    if(isset($_POST['password'])){
-	$password = $_POST['password'];
-  //$password = stripslashes($password);
+	$password = mysqli_real_escape_string($link,$_POST['password']);
+  $password = stripslashes($password);
   //$password = mysqli_real_escape_string($password);
 }
 
@@ -37,11 +37,11 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
 
   $password_hash = hash( 'whirlpool', $password );//to hash the entered password to check against the database
 
-   $sql = "SELECT * FROM `user_info` WHERE username = '$username' ";
+   $sql = "SELECT * FROM `user_info` WHERE username = '" .$username. "' ";
    $res = mysqli_query($link,$sql);//to query for a row that has the same username
    $rows = mysqli_num_rows($res);//to count the number of rows that have this username
 
-   $sql1 = "SELECT username, password, ascess_level, moderate_status FROM `user_info` WHERE username = '$username'";
+   $sql1 = "SELECT username, password, ascess_level, moderate_status FROM `user_info` WHERE username = '" .$username. "'";
    $res1 = mysqli_query($link, $sql1); 
    $ascess = mysqli_fetch_array($res1);//to fetch a assocaitive array
    $level = $ascess['ascess_level'];
@@ -68,6 +68,13 @@ echo "Success: A proper connection to MySQL was made! The first_db database is g
     //echo $level;
 	  header('Location: viewing.php');
    }
+
+ else if($rows==1 && $level==2 && $password_hash==$hash){
+      $_SESSION["username"] = $username; 
+      $_SESSION["ascess_level"] = $level;
+
+      header("Location: class_rep.php");
+ } 
  else {
   	echo "no";
     echo $rows;

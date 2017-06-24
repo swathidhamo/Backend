@@ -29,9 +29,11 @@ session_start();
 	 	    $username = $_POST["username"];
 	    	$password = $_POST["password"];
 		    $hash = getPasswordHash($password);
+        $ascess = 0;
 
-		    $sql = "INSERT INTO user_info (username, password, ascess_level) VALUES ('$username', '$hash','0')";
-            $query = mysqli_query($link,$sql);
+		        $sql = "INSERT INTO user_info (username, password, ascess_level) VALUES (?,?,?)";
+            $query = mysqli_prepare($link,$sql);
+            mysqli_stmt_bind_param($query,"ssi",$username,$password,$ascess);
             if($query){
         	  header("Location: connect.php");
             }
@@ -53,6 +55,12 @@ session_start();
    }
 
 ?>
+<style type="text/css">body{
+     background: #0ca3d2;
+  }
+
+
+   </style>
 </head>
 <body>
   <form method = "POST">

@@ -23,6 +23,10 @@
    p{
     font-style: bold;
    }
+
+   body{
+     background: #0ca3d2;
+   }
    img{
     width: 50px;
     height: 50px;
