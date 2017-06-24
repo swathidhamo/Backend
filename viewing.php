@@ -23,6 +23,10 @@
    p{
     font-style: bold;
    }
+   img{
+    width: 50px;
+    height: 50px;
+   }
 
 
 
@@ -40,11 +44,13 @@
      }
  
      else {
-      $display = "SELECT id,title, info FROM content";
+      $display = "SELECT id,title, info,image FROM content";
       $result = mysqli_query($link,$display);
       while($row = mysqli_fetch_assoc($result)) {
+        $image_data = $row["image"];
+        $image_encoded = base64_encode($image_data);
 
-        echo  "<div>Note  ".$row["id"]. "<p> Title:     " . $row["title"]."</p> <p>Info:   " . $row["info"]. "</p><br></div>";
+        echo  "<div>Note  ".$row["id"]. "<p> Title:     " . $row["title"]."</p> <p>Info:   " . $row["info"].  "<p><img src='data:image/jpeg;base64,$image_encoded'/></p>" . "</p><br></div>";
     }
 
   

@@ -7,13 +7,13 @@
     session_start();
 
     echo $_SESSION["username"];
-    //echo "hi";
+    
     if(!empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["ascess_level"]==1){
     
     if(isset($_GET['id'])){
 
      $id = $_GET['id'];
-     //echo $id;
+     
 
      if(isset($_POST["edit"])){
 
@@ -25,10 +25,17 @@
      if(isset($_POST['content0'])){
        $edited_info = $_POST['content0'];
      }
+
+      $image = $_FILES['image']['tmp_name'];
+      $img = file_get_contents($image);
      
-     $query_edit = "UPDATE content SET title = '$edited_title', info = '$edited_info' WHERE id = '$id' ";
+
+     
+     $query_edit = "UPDATE content SET title = '$edited_title', info = '$edited_info', image  = ? WHERE id = '$id' ";
+      $edit = mysqli_prepare($link,$query_edit);
+      mysqli_stmt_bind_param($edit, "s",$img);
+      $result = mysqli_stmt_execute($edit);
     
-     $result = mysqli_query($link,$query_edit);
     
 
      if($result){
@@ -61,7 +68,7 @@
      }
 
      }
-   //  header("Location: forum.php");
+  
 
 
    }
@@ -95,10 +102,11 @@
   </style>
 </head>
 <body>
- <form method = "POST" >
+ <form method = "POST" enctype="multipart/form-data" >
    	  <textarea name = "content0" id = "content0" width = "200" height = "200"></textarea>
 
    	  <input type = "text" name = "title">
+       <input type="file" name="image" />
    	  <input type= "submit" name = "edit" id = "edit" value = "Edit">
       <input type= "submit" name = "delete" id = "delete" value = "Delete">
 
