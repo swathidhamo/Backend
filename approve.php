@@ -7,7 +7,7 @@
 	  $link = mysqli_connect("127.0.0.1", "root", "", "first_db");
       session_start();
        if(!empty($_SESSION["username"]) && !empty($_SESSION["ascess_level"]) && $_SESSION["moderated"]==1){
-        $query = "SELECT id, title, info, image FROM approval";
+        $query = "SELECT id, title, info, image,priority FROM approval";
         $result = mysqli_query($link,$query);
         $rows = mysqli_num_rows($result);
 
@@ -16,26 +16,40 @@
         }
         
         while($array = mysqli_fetch_array($result)){
+          $priority_rows = $array['priority'];
+          if($priority_rows==0){
+            $status = "Low";
+          }
+          else if($priority_rows==1){
+            $status = "Medium";
+          }
+          else if($priority_rows==2){
+            $status = "High";
+          }
+
+
           $image_encoded = base64_encode($array["image"]);
-           echo  "<div>Note  ".$array["id"]. "<p> Title:     " . $array["title"]."</p> <p>Info:   " . $array["info"]. "<p><img src='data:image/jpeg;base64,$image_encoded'/></p>" . "</p><br></div>";
+           echo  "<div>Note  ".$array["id"]. "<p> Title:     " . $array["title"]."</p> <p>Info:   " .$array['info']."</p><p>".$status.
+           "</p><p><img src='data:image/jpeg;base64,$image_encoded'/></p><br></div>";
         }
 
         if(isset($_POST["id"]) ){
-          $id = int($_POST["id"]);
+          $id = ($_POST["id"]);
           
 
-          $query_approve = "SELECT title, info, image FROM approval WHERE id = '" .$id. "'";
+          $query_approve = "SELECT title, info, image, priority FROM approval WHERE id = '" .$id. "'";
           $result_approve = mysqli_query($link,$query_approve);
           $array_approve = mysqli_fetch_array($result_approve);
           $title = $array_approve["title"];
           $info = $array_approve["info"];
           $image_content = $array_approve["image"];
+          $priority =  $array_approve["priority"];
          // $img = base64_decode($image_content);
          
           if(isset($_POST["approve"])){
-            $query_append = "INSERT INTO content (title, info, image) VALUES ( ? , ? , ? )";
+            $query_append = "INSERT INTO content (title, info, image, priority) VALUES ( ? , ? , ?, ? )";
             $append_result = mysqli_prepare($link,$query_append);
-            mysqli_stmt_bind_param($append_result,"sss",$title,$info,$image_content);
+            mysqli_stmt_bind_param($append_result,"sssi",$title,$info,$image_content,$priority);
             mysqli_stmt_execute($append_result);
 
            

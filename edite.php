@@ -12,26 +12,29 @@
     
     if(isset($_GET['id'])){
 
-     $id = int($_GET['id']);
+     $id = ($_GET['id']);
      
 
      if(isset($_POST["edit"])){
 
 
-     if(isset($_POST['title'])){
-       $edited_title = $_POST['title'];
-       echo $edited_title;
-     }
-     if(isset($_POST['content0'])){
-       $edited_info = $_POST['content0'];
-     }
+       if(isset($_POST['title'])){
+        $edited_title = $_POST['title'];
+        echo $edited_title;
+      }
+       if(isset($_POST['content0'])){
+        $edited_info = $_POST['content0'];
+      }
+       if(isset($_POST["priority"])){
+        $priority = $_POST["priority"];
+      }
 
       $image = $_FILES['image']['tmp_name'];
       $img = file_get_contents($image);
      
 
      
-     $query_edit = "UPDATE content SET title = '".$edited_title. "', info = '".$edited_info."', image  = ? WHERE id = '" .$id. "' ";
+     $query_edit = "UPDATE content SET title = '".$edited_title. "', info = '".$edited_info."', image  = ?, priority = '".$priority."' WHERE id = '" .$id. "' ";
       $edit = mysqli_prepare($link,$query_edit);
       mysqli_stmt_bind_param($edit, "s",$img);
       $result = mysqli_stmt_execute($edit);
@@ -99,21 +102,31 @@
     border: 2.5px solid red;
    }
 
+   body {
+    font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+    color: #404040;
+    background: #0ca3d2;
+
+   }
+   textarea{
+    width: 200px; 
+    height: 200px;
+   }
+
   </style>
 </head>
 <body>
  <form method = "POST" enctype="multipart/form-data" >
-   	  <textarea name = "content0" id = "content0" width = "200" height = "200"></textarea>
-
-   	  <input type = "text" name = "title">
+       <input type = "text" name = "title" placeholder = "Enter the new title">
+   	   <textarea name = "content0" id = "content0" placeholder = "Enter the content"></textarea>
        <input type="file" name="image" />
-   	  <input type= "submit" name = "edit" id = "edit" value = "Edit">
-      <input type= "submit" name = "delete" id = "delete" value = "Delete">
-
-    
-
-
-
+       <p><select name = "priority">
+         <option value = "0">Low</option>
+         <option value = "1">Medium</option>
+         <option value = "2">High</option>
+       </select></p>
+   	   <input type= "submit" name = "edit" id = "edit" value = "Edit">
+       <input type= "submit" name = "delete" id = "delete" value = "Delete">
    </form>
    <a href = "logout.php" class = "link">Logout</a>
 

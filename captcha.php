@@ -55,21 +55,44 @@ session_start();
    }
 
 ?>
-<style type="text/css">body{
+<style type="text/css">
+  body{
      background: #0ca3d2;
+    }
+
+  .login{
+     border: 2px solid black;
+     border-radius: 6px 6px 6px 6px;
+     padding: 15px 15px 15px 15px;
+     margin right: 400px;
+     margin-top: 150px;
+     margin-left: 250px;
+     width: 450px;
+     font-size: 20px;
   }
+  .warn{
+    font-size: 7px;
+    padding-left: 60px;
+    color: red;
+  }
+
+
+
 
 
    </style>
 </head>
 <body>
   <form method = "POST">
+   <div class = "login">
     <p>Username: <input type = "text" name = "username"></p>
     <p>Password: <input type = "text" name = "password"> </p>
-	<p>Name: <input type='text' name='name'/></p>
+	  <p>Name: <input type='text' name='name'/></p>
 	<p>	<br><img src=captcha.jpg></p>
 	Enter the digits:<br><input type='text' name='captcha' placeholder='Type above Text'/>
-		<br><input type='submit' value='Register' name = 'submit'/>
+		<br><input type='submit' value='Register' name = 'submit'/>     
+   </div>
+   <p id = "warn">Note:You will by default be a student. Your ascess level can only be raised by a administrator</p>
   </form>
 
 </body>

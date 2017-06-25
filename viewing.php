@@ -13,11 +13,15 @@
     width: 350px;
     margin-left: 100px;
     padding-left: 30px;
+    background: #dce1ea;
    }
    .link{
     padding-left: 20px;
     padding-right: 20px;
     border: 2.5px solid red;
+   }
+   .priority{
+    color: red;
    }
 
    p{
@@ -48,13 +52,29 @@
      }
  
      else {
-      $display = "SELECT id,title, info,image FROM content";
+      $display = "SELECT id,title, info,image, priority FROM content";
+      if(isset($_POST["sort"])){
+        $display = "SELECT id,title, info,image, priority FROM content ORDER BY priority ASC";
+        echo "Sorted!";
+      }
       $result = mysqli_query($link,$display);
       while($row = mysqli_fetch_assoc($result)) {
         $image_data = $row["image"];
         $image_encoded = base64_encode($image_data);
+        $priority_rows = $row["priority"];
+        if($priority_rows==0){
+            $status = "Low";
+          }
+          else if($priority_rows==1){
+            $status = "Medium";
+          }
+          else if($priority_rows==2){
+            $status = "High";
+          }
 
-        echo  "<div>Note  ".$row["id"]. "<p> Title:     " . $row["title"]."</p> <p>Info:   " . $row["info"].  "<p><img src='data:image/jpeg;base64,$image_encoded'/></p>" . "</p><br></div>";
+
+
+        echo  "<div>Note  ".$row["id"]. "<p> Title:     " . $row["title"]."</p> <p>Info:   " . $row["info"]. "<p class = 'priority'> Priority:  " .$status. "</p>" ."<p><img src='data:image/jpeg;base64,$image_encoded'/></p>" ."</p><br></div>";
     }
 
   
@@ -64,12 +84,13 @@
   ?>
 </head>
 <body>
-   <a href = "logout.php" class = "link">Logout</a>
+   
    
    <form method = "POST" >
-   
+   <input type = "submit" value = "Sort by priority" name = "sort">
 
    </form>
+   <a href = "logout.php" class = "link">Logout</a>
 
   
 
