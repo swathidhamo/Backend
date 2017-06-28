@@ -18,6 +18,7 @@
 
      		if(isset($_POST["code"])){
      			$code = $_POST["code"];
+
      		}
      		if(isset($_POST["language"])){
      			$language = $_POST["language"];
@@ -51,6 +52,9 @@
           else if($time=='three'){
             $date = strtotime("+90 seconds");
           }
+          else{
+          $date = null;
+          }          
         }
 
         //$date = strtotime("+60 seconds");
@@ -103,8 +107,11 @@
                   <option value = "three"> 90 Seconds</option>  
                   <option value = "two">2 hours</option>
                   <option value = "twelve">12 hours</option>
+                  <option value = "none">No limit</option>
                 </select>
+
   <input type = "submit" name = "submit" value = "submit">
+  <a href = "logout.php">Logout</a>
 
 
 

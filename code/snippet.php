@@ -1,6 +1,8 @@
 <html>
 <head>
 	<title>Code snippets</title>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
 	<?php
   session_start();
 	$link = mysqli_connect("127.0.0.1", "root", "", "delta");
@@ -15,19 +17,24 @@
    	
    	while($result = mysqli_fetch_array($sql)){
       $current_time =strtotime("now");
-     if($result["times"]>=$current_time){
+      $string = htmlspecialchars($result["code"]);
+
+     if($result["times"]>=$current_time || empty($result["times"])){
      
       if($result["status"]==1 && $result["username"]==$_SESSION["username"]){
         //for code that is set private
-   		  print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   " . $result["code"]. "</p><p> language: ".$result['language']."<br></div>";
+   		  print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code' class = 'prettyprint'>" 
+               .$string. "</pre></p><p> language: ".$result['language']."<br></div>";
         }
         else if($result["status"]==0){
         //for code that is set as public
+
         if($result["visible"]==0){
           echo "Code contributed by : ".$result["username"];
          } 
 
-         print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   " . $result["code"]. "</p><p> language: ".$result['language']."<br></div>";
+         print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code' class = 'prettyprint'>"
+                .$string. "</pre></p><p> language: ".$result['language']."<br></div>";
          }
         else{
           echo "Sorry this code is set private by the contributor";
@@ -45,8 +52,17 @@
 
 
 	?>
+  <style type="text/css">
+   #code{
+    border: 3px solid red;
+    padding: 20px 20px 20px 20px;
+    margin: 20px 20px 20px 20px
+   }
+
+  </style>
 </head>
 <body>
-
+  <a href = "logout.php">Logout</a>
+  <a href = "insert.php">Create snippets</a>
 </body>
 </html>
