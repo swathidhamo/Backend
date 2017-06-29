@@ -20,6 +20,11 @@
      			$code = $_POST["code"];
 
      		}
+
+
+          $files = $_FILES['file']['tmp_name'];
+          $file = file_get_contents($files);
+
      		if(isset($_POST["language"])){
      			$language = $_POST["language"];
      		}
@@ -59,9 +64,9 @@
 
         //$date = strtotime("+60 seconds");
     
-     		$sql = "INSERT INTO code (title,code, language,status,username,visible,times) VALUES (?,?,?,?,?,?,?)";
+     		$sql = "INSERT INTO code (title,code, language,status,username,visible,times,file) VALUES (?,?,?,?,?,?,?,?)";
             $query = mysqli_prepare($link,$sql);
-            mysqli_stmt_bind_param($query,"sssisis",$title, $code, $language,$status,$username,$visible,$date);
+            mysqli_stmt_bind_param($query,"sssisiss",$title, $code, $language,$status,$username,$visible,$date,$file);
             $result = mysqli_stmt_execute($query);
      		if($result){
      			echo "Sucessfully added";
@@ -88,41 +93,49 @@
 	?>
     <style type="text/css">
       textarea{
-      	width: 400px;
-      	height: 400px;
+      	width: 450px;
+      	height: 600px;
       }
 
+   .newnote{
+     border: 2px solid black;
+     padding: 30px 30px 30px 30px;
+     
+   }
 
-    </style>
+   body {
+    font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+    color: #404040;
+    background: #0ca3d2;
+
+   }
+   
+
+
+
+  </style>
  </head>
-<body>
-  <form method = "POST">
-    Description: <input type= "text" name = "title" placeholder = "Enter a short description or name for the code">
-    Code: <textarea name = "code" placeholder= "Insert the snippet"></textarea>
-    Language: <input type = "text" name = "language" placeholder = "Enter the language">
-    Status Private: <input type = "radio" name = "status">
-    Stay anonymous: <input type = "radio" name = "visible">
-    Time limit: <select name = "time">
+ <body>
+  <div class = "newnote">
+   <form method = "POST" enctype="multipart/form-data">
+      <p> Description: <input type= "text" name = "title" placeholder = "Enter a short description or name for the code"></p>
+      <p>Code: <textarea name = "code" placeholder= "Insert the snippet"></textarea></p>
+      <p>File upload:<input type="file" name="file" /></p>
+      <p> Language: <input type = "text" name = "language" placeholder = "Enter the language"></p>
+      <p> Status Private: <input type = "radio" name = "status"></p>
+      <p> Stay anonymous: <input type = "radio" name = "visible"></p>
+      <p> Time limit: <select name = "time">
                   <option value = "one">30 minutes</option>
                   <option value = "three"> 90 Seconds</option>  
                   <option value = "two">2 hours</option>
                   <option value = "twelve">12 hours</option>
-                  <option value = "none">No limit</option>
-                </select>
+                  <option value = "none">Never</option>
+                </select></p></p>
 
-  <input type = "submit" name = "submit" value = "submit">
+       <p><input type = "submit" name = "submit" value = "Create snippet"></p>
+  </div>
   <a href = "logout.php">Logout</a>
 
-
-
-
-
-
-
-
-
-
-
-  </form>
-</body>
-</html>
+    </form>
+  </body>
+</html>''
