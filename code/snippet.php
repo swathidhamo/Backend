@@ -30,7 +30,7 @@
       if($result["status"]==1 && $result["username"]==$_SESSION["username"]){
         //for code that is set private
    		  print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code'
-         class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> language: ".$result['language']."<br></div>";
+         class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> Language: ".$result['language']."<br></div>";
         }
         else if($result["status"]==0){
         //for code that is set as public
@@ -40,7 +40,7 @@
          } 
 
          print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code' 
-         class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> language: ".$result['language']."<br></div>";
+         class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> Language: ".$result['language']."<br></div>";
          }
         else{
           echo "Sorry this code is set private by the contributor";
@@ -62,8 +62,16 @@
    #code{
     border: 3px solid red;
     padding: 20px 20px 20px 20px;
-    margin: 20px 20px 20px 20px
+    margin: 20px 20px 20px 20px;
+    background: #FFFFEF;
    }
+   body{
+    font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+    color: #404040;
+    background: #0ca3d2;
+
+   }
+   
 
   </style>
 </head>

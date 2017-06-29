@@ -93,8 +93,8 @@
 	?>
     <style type="text/css">
       textarea{
-      	width: 450px;
-      	height: 600px;
+      	width: 650px;
+      	height: 500px;
       }
 
    .newnote{
@@ -118,7 +118,7 @@
  <body>
   <div class = "newnote">
    <form method = "POST" enctype="multipart/form-data">
-      <p> Description: <input type= "text" name = "title" placeholder = "Enter a short description or name for the code"></p>
+      <p> Description: <input type= "text" name = "title" placeholder = "Enter a short description or title for the code" size = "60"></p>
       <p>Code: <textarea name = "code" placeholder= "Insert the snippet"></textarea></p>
       <p>File upload:<input type="file" name="file" /></p>
       <p> Language: <input type = "text" name = "language" placeholder = "Enter the language"></p>
