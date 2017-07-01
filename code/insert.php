@@ -62,7 +62,6 @@
           }          
         }
 
-        //$date = strtotime("+60 seconds");
     
      		$sql = "INSERT INTO code (title,code, language,status,username,visible,times,file) VALUES (?,?,?,?,?,?,?,?)";
             $query = mysqli_prepare($link,$sql);
@@ -84,7 +83,7 @@
          $sql = mysqli_query($link,$query_display);
          while($rows = mysqli_fetch_array($sql)){
 
-         echo "<p><a href= 'snippet.php?id=".$rows['id']."'>".$rows['title']."</a></p>"; 
+         echo "<p><a href= 'snippet.php?id=".$rows['id']."'>".$rows['id']." . ".$rows['title']."</a></p>"; 
          }
 
      }

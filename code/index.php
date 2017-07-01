@@ -1,12 +1,14 @@
 <html>
 <head>
 	<title>Code snippet forum-Login page</title>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 	<?php
 
      session_start();
      session_destroy();
 
      $link = mysqli_connect("127.0.0.1", "root", "", "delta");
+      require_once "recaptchalib.php";
      session_start();    
 
      if(!$link){
@@ -31,11 +33,29 @@
             
         	}
 
+
+
+        $secret = "6Le_iScUAAAAADkT6a-7dPnEBjWKhmMls2tOxJql";
+ 
+      // empty response
+        $response = null;
+ 
+      // check secret key
+        $reCaptcha = new ReCaptcha($secret);
+
+         if ($_POST["g-recaptcha-response"]) {
+          $response = $reCaptcha->verifyResponse(
+          $_SERVER["REMOTE_ADDR"],
+          $_POST["g-recaptcha-response"]
+        );
+      }
+
+
         $password_hash = hash('md5',$password);
-        $query = "SELECT * FROM user_info WHERE username = '$username' AND password = '$password_hash'";
-        $sql = mysqli_query($link,$query);
+        $query = "SELECT * FROM user_info WHERE username = '".$username."' AND password = '".$password_hash."'";
+        $sql = mysqli_query($link,$query);       
         $rows = mysqli_num_rows($sql);
-        if($rows==1){
+        if($rows==1&&$response != null&&$response->success){
             echo "Sucessfully logged in";
             $_SESSION["username"] = $username;
             header("Location: insert.php");
@@ -56,7 +76,11 @@
 
 
 
+
+
 	?>
+
+
 </head>
 <style type="text/css">
    .login{
@@ -84,8 +108,10 @@
     <p>Username: <input type = "text" name = "username" placeholder = 'Enter the username'></p>
     <p>Password: <input type = "text" name = "password" placeholder = "Enter the password"></p>
     <input type = "submit" name = "login" value = "Login">
+    <div class="g-recaptcha" data-sitekey="6Le_iScUAAAAAD2UsWWJ0fxKT2LtXk-MXNxR6JXS"></div>
   </form>
   <a href = "register.php">Click here to register</a>
 </div>
+<a href="list.php">This is the list of all snippets</a>
 </body>
 </html>

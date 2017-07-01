@@ -25,14 +25,14 @@
       }
       $lang= "language-".$result["language"];
 
-     if($result["times"]>=$current_time || empty($result["times"])){
+      if($result["times"]>=$current_time || empty($result["times"])){
      
-      if($result["status"]==1 && $result["username"]==$_SESSION["username"]){
-        //for code that is set private
-   		  print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code'
-         class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> Language: ".$result['language']."<br></div>";
-        }
-        else if($result["status"]==0){
+        if($result["status"]==1 && $result["username"]==$_SESSION["username"]){
+          //for code that is set private
+   		    print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . $result["title"]."</p> <p>Code:   <pre id = 'code'
+          class = 'prettyprint'><code class =".$lang.">".$string. "</code></pre></p><p> Language: ".$result['language']."<br></div>";
+         }
+      else if($result["status"]==0){
         //for code that is set as public
 
         if($result["visible"]==0){
