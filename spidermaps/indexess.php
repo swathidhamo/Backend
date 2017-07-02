@@ -24,6 +24,9 @@
     #info{
       border: 2px solid red;
     }
+    #contents{
+      border: 2px solid blue;
+    }
     </style>
        
     <script type="text/javascript">
@@ -98,7 +101,7 @@
         console.log(data.length);
      //var ti="title"
      for(var k = 0; k<data.length;k++){
-       document.getElementById("content").innerHTML += "<p id = 'info'>"+data[k]["title"]+"</p>   "+data[k]["entry"]+data[k]["lat"]+   "</p>";
+       document.getElementById("content").innerHTML += "<p id = 'info'>"+data[k]["title"]+"</p><p id = 'contents'>   "+data[k]["entry"]+data[k]["lat"]+   "</p>";
    
    }
     console.log(data[0]["title"]);

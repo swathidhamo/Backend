@@ -11,11 +11,11 @@
     //$lng = $_SESSION["lng"];
     echo $lat;
     echo $lng;
-    $latend = $lat + 1.0;
-    $latbgn = $lat - 1.0;
-    $lngend = $lng + 1.0;
-    $lngend = $lng - 1.0;
-     $query = "SELECT title, entry,lat FROM entry WHERE lat >= '$latbgn' AND lat <= '$latend' ";
+    $latend = $lat + 0.3;
+    $latbgn = $lat - 0.3;
+    $lngend = $lng + 0.3;
+    $lngend = $lng - 0.3;
+     $query = "SELECT title, entry,lat,username FROM entry WHERE lat >= '$latbgn' AND lat <= '$latend' AND lng >= '$lngbgn' AND lng <= '$lngend' ";
     //$query = "SELECT title, entry FROM entry WHERE id>='24'";
     $sql = mysqli_query($link,$query);
       if($sql){
