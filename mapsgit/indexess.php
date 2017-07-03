@@ -12,19 +12,20 @@
 
       $_POST["uname"] = $_SESSION["username"];
      if($_POST["submit"] || !empty($_POST["submit"])){
+
+        if(isset($_POST["status"])){
+          $status = $_POST["status"];
+        }
+
+       
+        
         if(isset($_POST["entry"])){
            $entry  = $_POST["entry"];
         } 
         if(isset($_POST["title"])){
            $title  = $_POST["title"];
         } 
-        if(isset($_POST["status"])){
-          $status = 1;
-        }
-        else{
-          $status = 0;
-        }
- 
+
                $lat = $_SESSION["lat"];
                $lng = $_SESSION["lng"];
            
@@ -147,7 +148,7 @@
             
          });*/
          var request = new XMLHttpRequest();
-         document.getElementById("content").innerHTML = " ";
+         document.getElementById("content").innerHTML = " work now ";
         request.open('GET', 'result.json', true);
         request.onload = function () {
        // begin accessing JSON data here
@@ -155,9 +156,22 @@
         console.log(data.length);
      //var ti="title"
      for(var k = 0; k<data.length;k++){
+      if(data[0]["status"]==1){
+        if(data[0]["username"]==nameuser){
+           document.getElementById("content").innerHTML += 
+           "<p class = 'info'>Entry by :  "+data[0]["username"]+"</p><p class = 'info'>   Title: "+
+           data[0]["title"]+"</p><p id = 'contents'>   "+data[0]["entry"] + "</p>";
+   
+        }
+        else{
+          document.getElementById("content").innerHTML += "<p class = 'info'>That is a private entry by " + data[0]["username"]+" </p>";
+        }
+      }
+      else{
        document.getElementById("content").innerHTML += 
-       "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-       data[k]["title"]+"</p><p id = 'contents'>   "+data[k]["entry"] + "</p>";
+       "<p class = 'info'>Entry by :  "+data[0]["username"]+"</p><p class = 'info'>   Title: "+
+       data[0]["title"]+"</p><p id = 'contents'>   "+data[0]["entry"] + "</p>";
+     }
    
    }
     console.log(data[0]["title"]);
@@ -312,7 +326,10 @@
      <p>Title: <input type = "text" name = "title"></p>
      <span id = "usernameStatus"></span>
      <p>Entry: <textarea name = "entry"></textarea></p>
-     <p>Private<input type = "radio" name = "private"></p>
+     <p>Private<select name = "status">
+      <option value = "0">Public</option>
+      <option value = "1">Private</option>
+     </select></p>
      <input type = "submit" name = "submit">
 
  </div>
