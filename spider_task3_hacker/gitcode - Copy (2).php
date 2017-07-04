@@ -21,34 +21,13 @@
         if(isset($_POST["title"])){
            $title  = $_POST["title"];
         } 
-         $lat = $_SESSION["lat"];
-         $lng = $_SESSION["lng"];
-
-        /* $allowed =  array('gif','png' ,'jpg');
-         $filename = $_FILES['image']['tmp_name'];
-         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            if(!in_array($ext,$allowed) ) {
-                 echo 'error';
-              }
-              else{
-           
-              }
-
-              $image = file_get_contents($filename);
-*/
-
+               $lat = $_SESSION["lat"];
+               $lng = $_SESSION["lng"];
            
           // $username = $_SESSION["username"];  
            //$time = strtotime("now");
-
-            /*  if(!empty($_FILES["image"]["tmp_name"])){
-              
-             $image = $_FILES['image']['tmp_name'];
-             $img = file_get_contents($image);
-           }*/
-
            //$username = "admin";
-           $username  = $_SESSION["username"];
+               $username  = $_SESSION["username"];
            $createdate= date('Y-m-d H:i:s');
            $votes = 0;
          $query = "INSERT INTO entry (username, entry, title, lat, lng,status,time,votes) VALUES 
@@ -203,7 +182,7 @@
            document.getElementById("content").innerHTML += 
            "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
            data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
-           +data[k]["lng"] +data[k]["entry"] +"<p><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments</a></p>"+ "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
+           +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
            "<a name  = 'vote'href='gitcode.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
    
         }
@@ -215,7 +194,7 @@
        document.getElementById("content").innerHTML += 
        "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
        data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
-       +data[k]["lng"] +data[k]["entry"] +"<p><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments</a></p>"+ "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
+       +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
        "<a name  = 'vote'href='gitcode.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
      }
    
@@ -404,11 +383,64 @@
     
 </script>
 
+
+	<?php
+    //session_start();   
+  /*   if($_COOKIE["info"]=="yes") {
+                  $latS = $_COOKIE["lat"];
+                  $lngS = $_COOKIE["lng"]; 
+                  $query = "SELECT id,title,entry FROM entry WHERE lat = '$latS' AND lng = '$lngS'";
+                  ECHO "YES";
+                  $sql = mysqli_query($link,$query);
+                  if($sql){
+                     while($result = mysqli_fetch_array($sql)){
+                      print  "<div>Snippet  ".$result["id"]. "<p> Title:     " . 
+                      $result["title"]."</p> <p>Entry:   ".$result["entry"]. 
+                      "</p><p><br></div>";
+                          }
+                     }
+              }
+ 
+     if($_POST["submit"]){
+        if(isset($_POST["entry"])){
+           $entry  = $_POST["entry"];
+        } 
+        if(isset($_POST["title"])){
+           $title  = $_POST["title"];
+        } 
+        if(isset($_POST["status"])){
+          $status = 1;
+        }
+        else{
+          $status = 0;
+        }
+ 
+               $lat = $_SESSION["lat"];
+               $lng = $_SESSION["lng"];
+           
+           $username = $_SESSION["username"];       
+         $query = "INSERT INTO entry (username, entry, title, lat, lng,status) VALUES 
+         ('$username','$entry','$title','$lat','$lng','$status')";
+         $sql = mysqli_query($link,$query);
+        if($sql){
+         	echo "Sucessfully updated";
+      
+       }
+       else{
+       	echo "Not updated";
+       	echo mysqli_error($link);
+       }
+     }
+          //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
+    
+    */
+ ?>
+
 </head>
 <body>
  <div id = "maps"></div>
  <div id = "content"></div>
- <form method = "POST"enctype "multipart/form-data">
+ <form method = "POST">
  	<a href = "entry.php"></a>
  <div id = "entry">
      <p>Title: <input type = "text" name = "title"></p>
@@ -418,10 +450,10 @@
       <option value = "0">Public</option>
       <option value = "1">Private</option>
      </select></p>
-     <p><input type="file" name="image" id="fileToUpload"></p>
      <input type = "submit" name = "submit">
-      <!-- <input type = "text" name = "comment_content">
-       <input type = "text" name = "comment_username">-->
+    
+       <input type = "text" name = "comment_content">
+       <input type = "text" name = "comment_username">
 
  </div>
     <a href="logout.php">Logout</a>
