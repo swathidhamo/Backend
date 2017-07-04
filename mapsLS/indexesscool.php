@@ -48,7 +48,12 @@
        }
      }
           //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
-    
+    if(isset($_POST["sort_time"])){
+      $_SESSION["sort_time"] = "sort";
+    }
+    else{
+      $_SESSION["sort_time"] = "no";
+    }
     
   ?>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -160,7 +165,7 @@
         if(data[k]["username"]==nameuser){
            document.getElementById("content").innerHTML += 
            "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-           data[k]["title"]+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
+           data[k]["title"]+"At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
    
         }
         else{
@@ -170,7 +175,7 @@
       else{
        document.getElementById("content").innerHTML += 
        "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-       data[k]["title"]+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
+       data[k]["title"]+"At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
      }
    
    }
@@ -361,11 +366,13 @@
       <option value = "1">Private</option>
      </select></p>
      <input type = "submit" name = "submit">
+    
        <input type = "text" name = "comment_content">
        <input type = "text" name = "comment_username">
 
  </div>
     <a href="logout.php">Logout</a>
+      <input type = "submit" name = "sort_time" value = "Sort by time">
 </form>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIEXY3Y8DysLQt5Se7ecaikiw6OUlxZJY&callback=myMap"></script>
 </body>

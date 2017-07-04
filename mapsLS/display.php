@@ -12,13 +12,18 @@
     //$lng = $_SESSION["lng"];
     //echo $lat;
     //echo $lng;
-    $latend = $latS + 1.0;
-    $latbgn = $latS - 1.0;
-    $lngend = $lngS + 1.0;
-    $lngend = $lngS - 1.0;
-     $query = "SELECT title, entry,lat,username,status FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
-   // $query = "SELECT title, entry,lat,username,status FROM entry WHERE lat > '$latbgn' AND 
-    //lng < '$lngend' AND lat < '$latend' AND lng >'$lngbgn' ";
+    $latend = $latS + 5.5;
+    $latbgn = $latS - 5.5;
+    $lngend = $lngS + 5.5;
+    $lngbgn = $lngS - 5.5;
+     //$query = "SELECT title, entry,lat,username,status,time FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
+    $query = "SELECT title, entry,lat,lng,username,status,time FROM entry WHERE lat >= '$latbgn' AND 
+    lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ";
+
+    if($_SESSION["sort_time"]=="sort"){
+      $query = "SELECT title, entry,lat,lng,username,status,time FROM entry WHERE lat >= '$latbgn' AND 
+    lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY time DESC ";   
+    }
     //$query = "SELECT title, entry FROM entry WHERE id>='24'";
     $sql = mysqli_query($link,$query);
 
