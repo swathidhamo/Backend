@@ -21,18 +21,18 @@
       //$query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE username = '$search' ";
     //}
     //else{
-      $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
-//       $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE (lat >'$latbgn' AND lat< '$latend')
-  //       AND (lng>'$lngbgn' AND lng<'$lngend') ";
+      //$query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
+      $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE (lat >'$latbgn' AND lat< '$latend')
+       AND (lng>'$lngbgn' AND lng<'$lngend') ";
 
          if($_SESSION["sort_option"]=="sort_by_time"){
                  $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >=  '$latbgn' AND 
-                lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY time DESC ";   
+                lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY time ASC ";   
        }
 
          if($_SESSION["sort_option"]=="sort_by_votes"){
                 $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >= '$latbgn' AND 
-               lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY votes ASC ";   
+               lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY votes DESC ";   
        }
    //}
     //$query = "SELECT title, entry FROM entry WHERE id>='24'";

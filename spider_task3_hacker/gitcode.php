@@ -29,8 +29,9 @@
            //$username = "admin";
                $username  = $_SESSION["username"];
            $createdate= date('Y-m-d H:i:s');
-         $query = "INSERT INTO entry (username, entry, title, lat, lng,status,time) VALUES 
-         ('$username','$entry','$title','$lat','$lng','$status','$createdate')";
+           $votes = 0;
+         $query = "INSERT INTO entry (username, entry, title, lat, lng,status,time,votes) VALUES 
+         ('$username','$entry','$title','$lat','$lng','$status','$createdate','$votes')";
          $sql = mysqli_query($link,$query);
         if($sql){
           echo "Sucessfully updated";
@@ -56,15 +57,14 @@
     }
    
   
-    if(!empty($_GET["lat_vote"]) && !empty($_GET["lng_vote"]) ) {
-      $lat_vote = $_GET["lat_vote"];
-      $lng_vote = $_GET["lng_vote"];
-      $query_vote = "UPDATE entry SET votes = votes + 1 WHERE lat = '$lat_vote' AND lng = '$lng_vote'";
+    if(!empty($_GET["id_vote"]) ) {
+      $id_vote = $_GET["id_vote"];
+      $query_vote = "UPDATE entry SET votes = votes + 1 WHERE id = '$id_vote' ";
       $result_vote = mysqli_query($link,$query_vote);
       if($result_vote){
         echo "Voting sucessful";
-        $lat_vote = null;
-        $lng_vote = null;
+        $_GET["id_vote"] = null;
+        
       }
       else{
         echo "Voting unsucessful";
@@ -183,8 +183,7 @@
            "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
            data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
            +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
-           "<a name  = 'vote'href='indexesscool.php?lat_vote="+data[k]["lat"]
-           +"&lng_vote="+data[k]['lng']+"'>Upvote</a></p></p>";
+           "<a name  = 'vote'href='gitcode.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
    
         }
         else{
@@ -196,8 +195,7 @@
        "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
        data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
        +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+
-       "<a name  = 'vote'href='indexesscool.php?lat_vote="+data[k]["lat"]
-       +"&lng_vote="+data[k]['lng']+"'>Upvote</a></p></p>";
+       "<a name  = 'vote'href='gitcode.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
      }
    
    }
@@ -216,9 +214,40 @@
      
     </script>
     <script type="text/javascript">
-          var lngArray = [];
+      var lngArray = [];
       var latArray = [];
       var multiple_entry = false;
+
+
+     function saveMarker(x,y,i){
+       if(latArray!=null&&lngArray!=null){
+         latArray.push(x);
+         lngArray.push(y);
+       }
+       else{
+        latArray = [];
+        lngArray = [];
+       }
+       
+         markerInfo(x,y);
+        // latArray.push(x);
+         //lngArray.push(y);
+         $("#entry").show();
+         localStorage.setItem("lat",JSON.stringify(latArray));
+         localStorage.setItem("lng",JSON.stringify(lngArray));
+         console.log(latArray);
+         i++;
+         localStorage.setItem("index",i);
+
+     }
+
+
+
+
+
+
+
+
   
     function myMap() {
   
@@ -257,7 +286,10 @@
               marker.addListener("dblclick",function(){
               console.log("create");
               marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-              markerInfo(location.lat,location.lng);
+               //multiple_entry = true;
+              saveMarker(location.lat,location.lng,i);
+               //RHIS BIT IS OUT
+           /*  markerInfo(location.lat,location.lng);
                latArray.push(location.lat);
                lngArray.push(location.lng);
               $("#entry").show();
@@ -265,7 +297,7 @@
               localStorage.setItem("lng",JSON.stringify(lngArray));
               console.log(latArray);
               i++;
-              localStorage.setItem("index",i);
+              localStorage.setItem("index",i);*/
            
                 
             });
@@ -277,11 +309,14 @@
        google.maps.event.addListener(map, 'click', function(event) {
          //latVar = "lat" + i;
          //lngVar = "lng" + i;
+         multiple_entry = false;
          placeMarker(event.latLng);
+         //ANS HERE
          var lat = event.latLng.lat();
          var lng = event.latLng.lng();
+         saveMarker(lat,lng,i);
          console.log("clicked!!!");
-         markerInfo(lat,lng);
+         /*markerInfo(lat,lng);
         if(latArray!=null&&lngArray!=null){
          latArray.push(lat);
          lngArray.push(lng);
@@ -301,7 +336,7 @@
         
          localStorage.setItem("index",i);
          //console.log(lat);
-         $("#entry").show();
+         $("#entry").show();*/
          
         });
     
@@ -318,9 +353,13 @@
         }
           i = localStorage.getItem("index");
           latIntro = JSON.parse(localStorage.getItem("lat"));
-          latIntro = latIntro.sort();
+         
           lngIntro = JSON.parse(localStorage.getItem("lng"));
-          lngIntro = lngIntro.sort();
+         
+          if(latIntro!=null){
+           lngIntro = lngIntro.sort();
+          latIntro = latIntro.sort();
+          }
         for(var j = 0;j<parseInt(localStorage.getItem("index"));j++){
           if(latIntro[j-1]==latIntro[j]){
              multiple_entry = true;
