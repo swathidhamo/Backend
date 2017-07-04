@@ -48,11 +48,35 @@
        }
      }
           //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
-    if(isset($_POST["sort_time"])){
-      $_SESSION["sort_time"] = "sort";
+    if(isset($_POST["sort_submit"])){
+      if($_POST["sort"]==2){
+        $_SESSION["sort_option"] = "sort_by_time";
+      }
+      else if($_POST["sort"] ==1){
+        $_SESSION["sort_option"] = "sort_by_votes";
+      }
+
+      
     }
     else{
-      $_SESSION["sort_time"] = "no";
+      $_SESSION["sort_option"] = "no";
+    }
+   
+
+  
+    if(!empty($_GET["lat_vote"]) && !empty($_GET["lng_vote"]) ) {
+      $lat_vote = $_GET["lat_vote"];
+      $lng_vote = $_GET["lng_vote"];
+      $query_vote = "UPDATE entry SET votes = votes + 1 WHERE lat = '$lat_vote' AND lng = '$lng_vote'";
+      $result_vote = mysqli_query($link,$query_vote);
+      if($result_vote){
+        echo "Voting sucessful";
+        $lat_vote = null;
+        $lng_vote = null;
+      }
+      else{
+        echo "Voting unsucessful";
+      }
     }
     
   ?>
@@ -161,11 +185,14 @@
         console.log(data.length);
      //var ti="title"
      for(var k = 0; k<data.length;k++){
+
       if(data[k]["status"]==1){
         if(data[k]["username"]==nameuser){
            document.getElementById("content").innerHTML += 
            "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-           data[k]["title"]+"At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
+           data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
+           +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+"<a name  = 'vote'href='indexesscool.php?lat_vote="+data[k]["lat"]
+           +"&lng_vote="+data[k]['lng']+"'>Upvote</a></p></p>";
    
         }
         else{
@@ -175,7 +202,9 @@
       else{
        document.getElementById("content").innerHTML += 
        "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-       data[k]["title"]+"At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "+data[k]["lng"] +data[k]["entry"] + "</p>";
+       data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
+       +data[k]["lng"] +data[k]["entry"] + "<p class = 'info'>Votes: "+data[k]["votes"]+"  "+"<a name  = 'vote'href='indexesscool.php?lat_vote="+data[k]["lat"]
+       +"&lng_vote="+data[k]['lng']+"'>Upvote</a></p></p>";
      }
    
    }
@@ -372,7 +401,12 @@
 
  </div>
     <a href="logout.php">Logout</a>
-      <input type = "submit" name = "sort_time" value = "Sort by time">
+      
+      <p>Sort By<select name = "sort">
+      <option value = "2">Time</option>
+      <option value = "1">Votes</option>
+     </select></p>
+     Sort:<input type = "submit" name = "sort_submit" value = "sort">
 </form>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIEXY3Y8DysLQt5Se7ecaikiw6OUlxZJY&callback=myMap"></script>
 </body>

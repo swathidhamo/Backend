@@ -17,12 +17,17 @@
     $lngend = $lngS + 5.5;
     $lngbgn = $lngS - 5.5;
      //$query = "SELECT title, entry,lat,username,status,time FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
-    $query = "SELECT title, entry,lat,lng,username,status,time FROM entry WHERE lat >= '$latbgn' AND 
+    $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >= '$latbgn' AND 
     lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ";
 
-    if($_SESSION["sort_time"]=="sort"){
-      $query = "SELECT title, entry,lat,lng,username,status,time FROM entry WHERE lat >= '$latbgn' AND 
+    if($_SESSION["sort_option"]=="sort_by_time"){
+      $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >= '$latbgn' AND 
     lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY time DESC ";   
+    }
+
+    if($_SESSION["sort_option"]=="sort_by_votes"){
+              $query = "SELECT title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >= '$latbgn' AND 
+    lng <= '$lngend' AND lat <= '$latend' AND lng >='$lngbgn' ORDER BY votes ASC ";   
     }
     //$query = "SELECT title, entry FROM entry WHERE id>='24'";
     $sql = mysqli_query($link,$query);
