@@ -148,13 +148,14 @@
     var i = 0;
     var latVar, lngVar;
     var parameter;
+    var searchCall = false;
     //var marker;
-   
+    var nameuser = document.getElementById("uname").value
    
    
     function markerInfo(x,y){
     
-     
+       
        var xml = new XMLHttpRequest(); 
        var parameters = "lat="+x+"&lng="+y;
        xml.open("POST","data.php",true);
@@ -168,16 +169,24 @@
     } 
 
            function markerInfoSend(xe,ye){
-            var nameuser = document.getElementById("uname").value;
-            
+          
+        var search_name  = document.getElementById("search_name").value;     
         var xmlhttp = new XMLHttpRequest();
+        console.log("soe");
          xmlhttp.open("POST", "display.php", true);
-         var parameter = "latSE="+xe+"&lngSE="+ye+"&name="+nameuser;
+         var parameter = "latSE="+xe+"&lngSE="+ye;
+         if(searchCall){
+          parameter = "name="+search_name;
+          console.log(search_name);
+         }
+         else{
+          console.log(xe + "   " + ye);
+         }
          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
          xmlhttp.send(parameter);
          xmlhttp.onreadystatechange = function() {
           
-          console.log(xe + "   " + ye);
+          
             if (this.readyState == 4 && this.status == 200) {        
             }
         };
@@ -241,6 +250,43 @@
       var lngArray = [];
       var latArray = [];
       var multiple_entry = false;
+
+    function autoComplete(){
+
+             
+         var name = document.getElementById("search_name").value    
+         var xmlhttps = new XMLHttpRequest();
+         xmlhttps.open("POST", "search.php", true);
+         var parametere = "username="+name;
+         xmlhttps.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xmlhttps.send(parametere);
+         xmlhttps.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+                 
+              
+
+            }
+
+
+        }
+        
+             var string = {};
+         
+            $.getJSON("search.json", function(json) {
+               //$("#browsers").html(" ");
+              for(var k =0;k<json.length;k++){
+                if(k==0){
+                   document.getElementById("browsers").innerHTML = " ";
+                }
+                var option = document.createElement("option");
+                 option.value = json[k]["username"];
+                 //console.log(json[k]["username"]);
+                document.getElementById("browsers").appendChild(option);
+              
+              }
+          });     
+     }
+  
 
 
      function saveMarker(x,y,i){
@@ -330,6 +376,11 @@
       
        
         window.onload = function(){
+        document.getElementById("search_name").addEventListener("keyup",autoComplete);
+        document.getElementById("search_button").addEventListener("click",function(){
+          searchCall = true;
+          markerInfoSend();
+        });
         if(localStorage.getItem("index")!=null){
           latArray = JSON.parse(localStorage.getItem("lat"));
           lngArray = JSON.parse(localStorage.getItem("lng"));
@@ -397,6 +448,10 @@
       <option value = "1">Votes</option>
      </select></p>
      <input type = "submit" name = "sort_submit" value = "Sort">
+     <input type = "text" name = "search_name" id = "search_name" list = "browsers" placeholder = "search">
+     <input type = "submit" name = "search_button" id = "search_button" value = "Search">
+       <datalist id = "browsers">
+       </datalist>
           <p><input type = "text" name = "image_id">
       <input type="submit" name="upload_image" value = "upload"></p>
 </form>

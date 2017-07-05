@@ -4,9 +4,19 @@
 	<?php
     $link = mysqli_connect("127.0.0.1", "root", "", "maps");
     session_start();  
-   
-    $latS = $_POST["latSE"];
-    $lngS = $_POST["lngSE"];
+    
+
+
+    if(!empty($_POST["latS"])){
+      $latS = $_POST["latSE"];
+    }
+    if(!empty($_POST["lngS"])){
+      $lngS = $_POST["lngSE"];
+    }
+    if(!empty($_POST["name"])){
+      $user_name = $_POST["name"];
+    }
+
     //$search = $_POST["name"];
     
     //$lat = $_SESSION["lat"];
@@ -24,6 +34,10 @@
       //$query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat = '$latS'AND lng = '$lngS' ";
       $query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE (lat >'$latbgn' AND lat< '$latend')
        AND (lng>'$lngbgn' AND lng<'$lngend') ";
+       if(isset($_POST["name"])){
+             $query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE username = '$user_name' ";
+
+       }
 
          if($_SESSION["sort_option"]=="sort_by_time"){
                  $query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE lat >=  '$latbgn' AND 

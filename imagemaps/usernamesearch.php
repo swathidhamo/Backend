@@ -20,18 +20,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
       ?>
   <script type="text/javascript">
 
@@ -39,12 +27,12 @@
 
              
          var name = document.getElementById("search_name").value    
-         var xmlhttp = new XMLHttpRequest();
-         xmlhttp.open("POST", "search.php", true);
+         var xmlhttps = new XMLHttpRequest();
+         xmlhttps.open("POST", "search.php", true);
          var parameter = "username="+name;
-         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-         xmlhttp.send(parameter);
-         xmlhttp.onreadystatechange = function() {
+         xmlhttps.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xmlhttps.send(parameter);
+         xmlhttps.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
                  
               
@@ -66,7 +54,7 @@
                  option.value = json[k]["username"];
                  console.log(json[k]["username"]);
                 document.getElementById("browsers").appendChild(option);
-              //  string.content +=  ("<option value = '" +json[k]["username"]+ "'>");
+              
               }
           });     
      }
@@ -104,8 +92,6 @@
   <div name = "status" id = "status">
    <input type = "submit" value = "Submit" name = "submit" id = "submit">
    <datalist id = "browsers">
-    <option value = "google">
-
    </datalist>
   </div>
    <a href = "gitcode.php">Back to the map</a>
