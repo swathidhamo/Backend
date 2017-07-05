@@ -7,20 +7,19 @@
     session_start();
 
     
-    if(!empty($_SESSION["image_id"])){
-    
-    
+    if(!empty($_SESSION["image_id"]) || !empty($_SESSION["username"])){
+     
      $id = $_SESSION["image_id"];
 
      if(isset($_POST["submit"])){
 
 
-       
 
-      $image = $_FILES['image']['tmp_name'];
+    $image = $_FILES['image']['tmp_name'];
+    
+    
+            
       $img = file_get_contents($image);
-     
-
      
      $query_edit = "UPDATE entry SET image  = ? WHERE id = '" .$id. "' ";
       $edit = mysqli_prepare($link,$query_edit);
@@ -30,12 +29,19 @@
     
 
      if($result){
-      echo "Edited";
-      header("Location: gitcode.php");
-     }
-
+      echo "uploaded";
+        }
+      }
      }
    //  header("Location: forum.php");
+     $query_fetch = "SELECT image,id,title FROM entry WHERE image IS NOT NULL  ";
+     $sql_fetch = mysqli_query($link,$query_fetch);
+     if($sql_fetch){
+       while($result=mysqli_fetch_assoc($sql_fetch)){
+        $image_encoded = base64_encode($result["image"]);
+        echo $result["id"]."  Image for ".$result["title"]."  is"."<p><img src='data:image/jpeg;base64,$image_encoded'/></p>";
+       }
+     
 
 
    }
@@ -59,6 +65,10 @@
     color: #404040;
     background: #0ca3d2;
 
+   }
+   img{
+    width: 50px;
+    height: 50px;
    }
 
 

@@ -189,30 +189,37 @@
        // begin accessing JSON data here
          var data = JSON.parse(this.responseText);
          console.log(data.length);
+         var content = document.getElementById("content");
      //var ti="title"
          for(var k = 0; k<data.length;k++){
             if(data[k]["status"]==1){
               if(data[k]["username"]==nameuser){
-                  document.getElementById("content").innerHTML += 
+                   content.innerHTML += 
                   "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
                   data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
                   +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
                    " Votes: "+data[k]["votes"]+"  "+
-                  "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
+                  "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+btoa(data[k]["image"])+"'>Upvote</a></p></p>";
+                  if(data[k]["image"]!=null){
+                     content.innerHTML += btoa(data[k]["image"]);
+                  }
    
               }
               else{
-                document.getElementById("content").innerHTML += "<p class = 'info'>That is a private entry by " + 
+                 content.innerHTML += "<p class = 'info'>That is a private entry by " + 
                data[k]["username"]+" </p>";
               }
             }
            else{
-            document.getElementById("content").innerHTML += 
+             content.innerHTML += 
             "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
             data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
             +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
              " Votes: "+data[k]["votes"]+"  "+
-            "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
+            "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+btoa(data[k]["image"])+"'>Upvote</a></p></p>";
+            if(data[k]["image"]!=null){
+               content.innerHTML += btoa(data[k]["image"]);
+            }
              }
    
           }
